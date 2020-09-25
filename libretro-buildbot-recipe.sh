@@ -1474,6 +1474,37 @@ if [ "${PLATFORM}" == "ctr" ] && [ "${RA}" == "YES" ]; then
 
 	if [ "${BUILD}" == "YES" -o "${FORCE}" == "YES" -o "${FORCE_RETROARCH_BUILD}" == "YES" -o "${CORES_BUILT}" == "YES" ]; then
 
+		cd $WORK/$RADIR
+		echo "$PWD"
+
+		echo 'Packaging'
+
+		cp retroarch.cfg retroarch.default.cfg
+
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/cores
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/remaps
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/cheats
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/romfs
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/romfs/cores
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/romfs/cores/info
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/romfs/filters
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/romfs/filters/audio
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/romfs/filters/video
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/romfs/database
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/romfs/database/rdb
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/romfs/database/cursors
+		mkdir -p $WORK/$RADIR/pkg/ctr/build/romfs/media
+
+		cp $WORK/$RADIR/gfx/video_filters/*.filt $WORK/$RADIR/pkg/ctr/build/romfs/filters/video/
+		cp $WORK/$RADIR/libretro-common/audio/dsp_filters/*.dsp $WORK/$RADIR/pkg/ctr/build/romfs/filters/audio/
+		cp $RARCH_DIST_DIR/../info/*.info $WORK/$RADIR/pkg/ctr/build/romfs/cores/info/
+		cp $WORK/$RADIR/media/libretrodb/rdb/*.rdb $WORK/$RADIR/pkg/ctr/build/romfs/database/rdb/
+		cp $WORK/$RADIR/media/libretrodb/cursors/*.dbc $WORK/$RADIR/pkg/ctr/build/romfs/database/cursors/
+		cp -r $WORK/$RADIR/media/assets/rgui $WORK/$RADIR/pkg/ctr/build/romfs/media/
+
+		convert_xmb_assets $WORK/$RADIR/media/assets/xmb $WORK/$RADIR/pkg/ctr/build/romfs/media/xmb 64x32! 400x240! 90
+
 		touch $TMPDIR/built-frontend
 
 		cd dist-scripts
@@ -1487,34 +1518,6 @@ if [ "${PLATFORM}" == "ctr" ] && [ "${RA}" == "YES" ]; then
 
 		ENTRY_ID=""
 
-		cd $WORK/$RADIR
-		echo "$PWD"
-
-		echo 'Packaging'
-
-		cp retroarch.cfg retroarch.default.cfg
-
-		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch
-		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/cores
-		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/cores/info
-		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/remaps
-		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/cheats
-		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/filters
-		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/filters/audio
-		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/filters/video
-		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/database
-		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/database/rdb
-		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/database/cursors
-		mkdir -p $WORK/$RADIR/pkg/ctr/build/retroarch/media
-
-		cp $WORK/$RADIR/gfx/video_filters/*.filt $WORK/$RADIR/pkg/ctr/build/retroarch/filters/video/
-		cp $WORK/$RADIR/libretro-common/audio/dsp_filters/*.dsp $WORK/$RADIR/pkg/ctr/build/retroarch/filters/audio/
-		cp $RARCH_DIST_DIR/../info/*.info $WORK/$RADIR/pkg/ctr/build/retroarch/cores/info/
-		cp $WORK/$RADIR/media/libretrodb/rdb/*.rdb $WORK/$RADIR/pkg/ctr/build/retroarch/database/rdb/
-		cp $WORK/$RADIR/media/libretrodb/cursors/*.dbc $WORK/$RADIR/pkg/ctr/build/retroarch/database/cursors/
-		cp -r $WORK/$RADIR/media/assets/rgui $WORK/$RADIR/pkg/ctr/build/retroarch/media/
-
-		convert_xmb_assets $WORK/$RADIR/media/assets/xmb $WORK/$RADIR/pkg/ctr/build/retroarch/media/xmb 64x32! 400x240! 90
 	fi
 fi
 
